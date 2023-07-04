@@ -54,8 +54,9 @@
         '';
 
         meta = with lib; {
-          homepage = "https://www.zoiper.com/";
           description = "Voip softphone";
+          homepage = "https://www.zoiper.com/";
+          # license = licenses.unfree;
           platforms = platforms.linux;
           architectures = [ "x86" ];
         };
