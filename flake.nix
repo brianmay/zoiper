@@ -7,8 +7,8 @@
       with import nixpkgs { system = "x86_64-linux"; };
       let
         src = fetchurl {
-          url = "https://shop.zoiper.com/download.php?id=OLPBMFJT3SD5PM3";
-          sha256 = "sha256-jTw0UxS9JiCJmFWndOOP9Wz2A69k2cN1C925uCUMvuM=";
+          url = "https://shop.zoiper.com/download.php?id=BDOPCQJIVA2V538";
+          sha256 = "sha256-qzqSaqfSQ1ESjWQG5TbpED4OePXjZWFsjpb5XJTpTy4=";
         };
       in stdenv.mkDerivation {
         pname = "zoiper5";
