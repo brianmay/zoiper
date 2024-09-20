@@ -1,22 +1,21 @@
 {
   description = "zoiper5 package";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-  outputs = { self, nixpkgs }: {
-    packages.x86_64-linux.default =
-      with import nixpkgs { system = "x86_64-linux"; };
-      let
-        src = fetchurl {
-          url = "https://shop.zoiper.com/download.php?id=BDOPCQJIVA2V538";
-          sha256 = "sha256-qzqSaqfSQ1ESjWQG5TbpED4OePXjZWFsjpb5XJTpTy4=";
-        };
-      in stdenv.mkDerivation {
+  outputs = {
+    self,
+    nixpkgs,
+  }: {
+    packages.x86_64-linux.default = with import nixpkgs {system = "x86_64-linux";}; let
+      src = ./Zoiper5_5.6.4_x86_64.tar.xz;
+    in
+      stdenv.mkDerivation {
         pname = "zoiper5";
-        version = "21.07.0";
+        version = "5.6.4";
 
         src = src;
 
-        nativeBuildInputs = [ autoPatchelfHook ];
+        nativeBuildInputs = [autoPatchelfHook];
 
         buildInputs = [
           alsa-lib
@@ -40,6 +39,8 @@
           xorg.libXdamage
           xorg.libXrandr
           xorg.libXScrnSaver
+          libva
+          pciutils
         ];
 
         sourceRoot = ".";
@@ -58,9 +59,8 @@
           homepage = "https://www.zoiper.com/";
           # license = licenses.unfree;
           platforms = platforms.linux;
-          architectures = [ "x86" ];
+          architectures = ["x86"];
         };
       };
   };
-
 }
