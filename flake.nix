@@ -19,7 +19,10 @@
 
           src = src;
 
-          nativeBuildInputs = [ autoPatchelfHook ];
+          nativeBuildInputs = [
+            autoPatchelfHook
+            pkgs.makeWrapper
+          ];
 
           buildInputs = [
             alsa-lib
@@ -29,7 +32,6 @@
             dbus
             expat
             gdk-pixbuf
-            libGL
             gtk2
             krb5
             libdrm
@@ -57,6 +59,13 @@
             mkdir -p "$out/bin"
             tar -C "$out/opt" -xvf ${src}
             ln -s ../opt/Zoiper5/zoiper "$out/bin"
+            wrapProgram $out/bin/zoiper \
+              --prefix LD_LIBRARY_PATH : ${
+                lib.makeLibraryPath [
+                  systemd
+                  libGL
+                ]
+              }
           '';
 
           meta = with lib; {
