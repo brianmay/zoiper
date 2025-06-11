@@ -11,7 +11,11 @@
       packages.x86_64-linux.default =
         with import nixpkgs { system = "x86_64-linux"; };
         let
-          src = ./Zoiper5_5.6.9_x86_64.tar.xz;
+          src = fetchurl {
+            url = "https://www.zoiper.com/en/voip-softphone/download/zoiper5/for/linux";
+            sha256 = "sha256-YEig6L9oLDKlYLBKNurS/eTApJF2U4CJxtUnv72k5VQ=";
+            curlOptsList = [ "-b PHPSESSID=XXX" ];
+          };
           build = stdenv.mkDerivation {
             pname = "zoiper5";
             version = "5.6.9";
