@@ -49,40 +49,40 @@
           name = "zoiper";
           targetPkgs =
             pkgs: with pkgs; [
-              build
               alsa-lib
               at-spi2-core
+              build
               cairo
               cups
               dbus
               expat
+              fontconfig
+              freetype
               gdk-pixbuf
+              glib
               gtk2
               krb5
               libdrm
+              libgbm
+              libGL
               libnotify
               libpulseaudio
               libv4l
+              libva
               libxkbcommon
               mesa
+              nspr
               nss
               pango
+              pciutils
+              xorg.libX11
               xorg.libXcomposite
               xorg.libXdamage
+              xorg.libXext
+              xorg.libXi
               xorg.libXrandr
               xorg.libXScrnSaver
-              xorg.libXi
-              xorg.libX11
-              xorg.libXext
-              libGL
-              glib
-              libva
-              pciutils
-              fontconfig
-              freetype
-              nspr
               zlib
-              libgbm
             ];
           runScript = "zoiper";
         };
