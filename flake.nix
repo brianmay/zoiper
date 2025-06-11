@@ -12,69 +12,75 @@
         with import nixpkgs { system = "x86_64-linux"; };
         let
           src = ./Zoiper5_5.6.9_x86_64.tar.xz;
-        in
-        stdenv.mkDerivation {
-          pname = "zoiper5";
-          version = "5.6.9";
+          build = stdenv.mkDerivation {
+            pname = "zoiper5";
+            version = "5.6.9";
 
-          src = src;
+            src = src;
 
-          nativeBuildInputs = [
-            autoPatchelfHook
-            pkgs.makeWrapper
-          ];
+            sourceRoot = ".";
 
-          buildInputs = [
-            alsa-lib
-            at-spi2-core
-            cairo
-            cups
-            dbus
-            expat
-            gdk-pixbuf
-            gtk2
-            krb5
-            libdrm
-            libnotify
-            libpulseaudio
-            libv4l
-            libxkbcommon
-            mesa
-            nss
-            pango
-            xorg.libXcomposite
-            xorg.libXdamage
-            xorg.libXrandr
-            xorg.libXScrnSaver
-            libva
-            pciutils
-          ];
+            unpackPhase = ":";
 
-          sourceRoot = ".";
+            installPhase = ''
+              mkdir -p "$out/opt"
+              mkdir -p "$out/bin"
+              tar -C "$out/opt" -xvf ${src}
+              ln -s ../opt/Zoiper5/zoiper "$out/bin"
+            '';
 
-          unpackPhase = ":";
+            meta = with lib; {
+              description = "Voip softphone";
+              homepage = "https://www.zoiper.com/";
+              # license = licenses.unfree;
+              platforms = platforms.linux;
+              architectures = [ "x86" ];
+            };
 
-          installPhase = ''
-            mkdir -p "$out/opt"
-            mkdir -p "$out/bin"
-            tar -C "$out/opt" -xvf ${src}
-            ln -s ../opt/Zoiper5/zoiper "$out/bin"
-            wrapProgram $out/bin/zoiper \
-              --prefix LD_LIBRARY_PATH : ${
-                lib.makeLibraryPath [
-                  systemd
-                  libGL
-                ]
-              }
-          '';
-
-          meta = with lib; {
-            description = "Voip softphone";
-            homepage = "https://www.zoiper.com/";
-            # license = licenses.unfree;
-            platforms = platforms.linux;
-            architectures = [ "x86" ];
+            dontPatchELF = true;
+            dontStrip = true;
           };
+        in
+        pkgs.buildFHSEnv {
+          name = "zoiper";
+          targetPkgs =
+            pkgs: with pkgs; [
+              build
+              alsa-lib
+              at-spi2-core
+              cairo
+              cups
+              dbus
+              expat
+              gdk-pixbuf
+              gtk2
+              krb5
+              libdrm
+              libnotify
+              libpulseaudio
+              libv4l
+              libxkbcommon
+              mesa
+              nss
+              pango
+              xorg.libXcomposite
+              xorg.libXdamage
+              xorg.libXrandr
+              xorg.libXScrnSaver
+              xorg.libXi
+              xorg.libX11
+              xorg.libXext
+              libGL
+              glib
+              libva
+              pciutils
+              fontconfig
+              freetype
+              nspr
+              zlib
+              libgbm
+            ];
+          runScript = "zoiper";
         };
     };
 }
